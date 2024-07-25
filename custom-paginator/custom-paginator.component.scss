@@ -1,0 +1,68 @@
+.custom-paginator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+  
+    .pagination {
+      display: flex;
+      align-items: center;
+    }
+  
+    .page-size-selector {
+      margin-right: 50px;
+      background-color: #fafafa;
+      appearance: outline;
+      
+    }
+    .page-button1 {
+        // removendo a borda e adicionando estilos de botão circular
+        margin-right: 5px;
+        border: none;
+        background: #e9e9e9;
+        cursor: pointer;
+        border-radius: 50%; // botões em formato de círculo
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease; 
+        // estilização adicional conforme necessário
+      } 
+
+        .page-button1.active {
+        background-color: #accbe1;
+        color: #626262;
+        }
+
+        .page-button1:hover {
+        background-color: #ccc; 
+        }
+
+      .page-button {
+        // removendo a borda e adicionando estilos de botão circular
+        margin-right: 5px;
+        border: none;
+        background: #ececec;
+        cursor: pointer;
+        border-radius: 50%; // botões em formato de círculo
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: background-color 0.2s ease; 
+
+      } 
+
+      .page-button:hover {
+        background-color: #ccc; 
+        }
+
+  }
+.seletor-pag-size{
+  background-color: #e9e9e9;
+}
+  

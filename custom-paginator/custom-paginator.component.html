@@ -1,0 +1,25 @@
+
+
+  <div class="custom-paginator">
+    <div class="pagination m-l-24">
+      <button class="page-button" (click)="goToFirstPage()" [disabled]="currentPage === 1">|&lt;</button>
+      <button class="page-button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">&lt;</button>
+      <button *ngFor="let page of calculateVisiblePages()" class="page-button1" (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+      <button class="page-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+      <button class="page-button" (click)="goToLastPage()" [disabled]="currentPage === totalPages">&gt;|</button>
+    </div>
+    <div class="row"> 
+      <div class="total-items m-t-4" style="margin-right: 8px">
+        Total de registros: {{ length }}
+      </div>
+      
+      <div class="rounded page-size-selector">
+            <button class="seletor-pag-size" mat-button  style="width: 180px; height: 30px;">
+                <mat-select style="width: 170px;" (selectionChange)="onPageSizeSelectionChange($event)" [value]="pageSize">
+                    <mat-option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }} Registros </mat-option>
+                </mat-select>
+            </button> 
+        </div>
+    </div>
+  </div>
+
