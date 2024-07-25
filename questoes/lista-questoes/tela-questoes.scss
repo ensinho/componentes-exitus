@@ -1,0 +1,342 @@
+
+
+// Estilos para a tabela
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* conteudo da tabela */
+  th, td {
+    padding: 2px;
+    text-align: left;
+  }
+
+  // Aplica estilos diretamente nas linhas com base no índice
+  tr:nth-child(even) {
+    background-color: #f9f9f9; // Cor de fundo cinza para linhas pares
+    
+  }
+   // Aplica estilos diretamente nas linhas com base no índice
+  tr:nth-child(odd) {
+    background-color: #ffffff; // Cor de fundo branca para linhas ímpares
+    height: 20px;
+  }
+
+     
+  //////// DIV BOTOES TELA DE PESQUISA QUESTOES ////////
+  .botoes_edicao {
+    /* manipulação da div */
+    display: flex;
+    gap: 2px;
+    margin-bottom: 20px;
+    margin-left: 20%;
+
+    /* edição para botao aba lateral ativado */
+    .active {
+      background-color: #5C7286 !important;
+      /* hover do mesmo */
+      &:hover {
+        background-color: #81A5D3;
+      } 
+    }   
+  
+  }
+
+  /* icones da barra tela questao */
+  .icon-questao {
+    color: #fff;
+  }
+
+  /* botoes tela de questao */
+  .botoes_tela_questao {
+    background-color: #7696BC ; 
+
+    &:hover {
+      background-color: #81A5D3 ;
+    }   
+  }
+
+  /* botao aba lateral */
+  .btn_aba_lateral{
+    background-color: #7696BC !important;  
+    &:hover {
+      background-color: #81A5D3 !important;
+    }  
+  }
+
+  /* botao adicionar questoes */
+  .btn_add_questoes{
+    background-color: #7696BC !important;  
+    &:hover {
+      background-color: #81A5D3 !important;
+    } 
+  }
+  
+  /* hover nas linhas da tabela, para puxar a aba lateral */
+  .clique-aba-lateral{
+    &:hover {
+      cursor: pointer;
+      background-color: #f1f1f1;
+    }
+  }
+
+  //////////////////* aba lateral de questoes  *//////////////////
+  .aba-lateral {
+    /* configuraçoes dela */
+    height: 95.8%; 
+    width: 31.05%; 
+    background-color: #fefefe; 
+    border-radius: 5px;
+    overflow: hidden; 
+
+    /* header aba lateral */
+    .header-aba-lateral {
+      border-top-left-radius: 5px ;
+      border-top-right-radius: 5px ;
+      background-color: #536674;
+      padding-top: 1px; 
+      padding-right:2px ;
+      border: 2px solid #d8d8d8; 
+
+    }
+
+    /* DIV botoes da header aba lateral */
+    .botoes-header-lateral {
+      padding-top: 6px !important;
+      margin-left: 12%; 
+      padding-right: 0 !important;
+    }
+
+    /* titulo aba lateral */
+    .title-lateral {
+      color: #fff;
+    }
+
+    /* BOTOES header aba lateral  */
+    .botao_add {
+      color: #f3f3f3;
+      height: 38px;
+      width: 38px;
+      &:hover {
+        background-color: #5C7286 ;
+      }
+    }
+
+    /* estilos scrollbar aba lateral */
+    .aba-lateral-scrollbar{
+      height: 56.8vh ; 
+      padding-right: 2px !important;
+      --scrollbar-size: 8px !important;
+    }
+
+    /* comportamento tabs aba lateral */
+    .custom-tab-group {
+      padding: 8px;
+      padding-bottom: 4px !important;
+    }
+
+  }
+
+
+  /// container sidenav visao ///
+  .visao-container {
+    /* nao escurecer o fundo quando clicado */
+    --mat-sidenav-scrim-color: transparent !important;
+  }
+
+  //////////////////*  sidenav visao  *//////////////////
+  .aba-visao {
+    /* estilos sidenav visao */
+    border: 1px solid #c5c5c5;
+    box-shadow: none;
+    width: 20%;
+    height: 80.5vh; 
+    background-color: #fefefe !important; 
+    border-radius: 5px; 
+    overflow: hidden;
+
+    /* scrollbar visao */
+    .scrollbar-visao {
+      height: 80vh ; 
+      --scrollbar-size: 9px
+    }
+
+    /* header visao */
+    .aba-visao-header {
+      background-color: #536674;
+      border-top-left-radius: 5px ;
+      border-top-right-radius: 5px ;
+      padding-top: 1px; 
+      padding-right:2px ;
+    }
+
+    .visao-content {
+      padding-left: 8px !important;
+    }
+
+    /* div botoes visao */
+    .div-botoes-header-visao{
+      padding-top: 1.5%;
+      margin-left: 27%; 
+      padding-right: 0 !important;
+    }
+
+    /* titulo aba visao */
+    .title-visao {
+      font-size: 17px;
+      margin-left: 1.5px;
+      color: #fff;
+    }
+    
+    /* botoes visao */
+    .botao_add {
+      color: #fff;
+      height: 37px;
+      width: 37px;
+      &:hover {
+        background-color: #5C7286 !important;
+      }
+    }
+
+    /* botao visao padrao  */
+    .botao-view-exitus {
+      /* margin-left: 3px; */
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #4d5d68;
+    }
+
+    /* botoes de visoes */
+    .botao-view {
+      /* margin-left: 3px; */
+      margin-bottom: 14px;
+      font-size: 15px;
+      font-weight: 400;
+      color: #4d5d68;
+    }
+
+    /* comportamento de visao ativa */
+    .botao-view-exitus.active,
+    .botao-view.active {
+      color: #fff !important;
+      background-color: #7696BC;
+      font-weight: 600; 
+    }
+
+    /* excluir visao */
+    .botao-delete {
+      width: 38px;
+      height: 38px;
+      margin-left: 1px;
+      border: none;
+      background-color: transparent;
+
+      /* hover botao excluir */
+      &:hover {
+        background: #ececec;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    }
+    
+    /* checkbox marcar como padrao */
+    .padrao {
+      margin-bottom: 29px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #4d5d68;
+    }
+
+    ///// divisao colunas aba visao //////
+    /* container */
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+  
+  /* coluna dos checkboxes */
+  .checkbox-col {
+      flex: 0 1px 1px;
+  }
+  
+  /* coluna dos botoes */
+  .button-col {
+      flex: 0 0 216px; 
+      .mdc-button {
+        justify-content: start !important;
+      }
+  }
+  
+  /* coluna dos deletes */
+  .delete-col {
+      flex: 0 0 auto;
+  }
+  
+  .checkbox-padrao .custom-checkbox {
+      display: block;
+  }
+  
+  /* botoes das visoes */
+  .botao-view {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  /* botoes deletar visao */
+  .botao-delete {
+    margin-bottom: 12px;
+  }
+
+  .delete-sub-col {
+    padding-left: 3px !important;
+  }
+
+  }
+
+  /* botao puxar sidenav visao */
+  .meio-circulo {
+    /* comportamento para sua posição*/
+    position: fixed;
+    right: 39px;
+    top: 54%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 45px;
+    background-color: #7696BC;
+    color: white;
+    border: none;
+    border-radius: 50px 0 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: right 0.1s ease; 
+    &:hover {
+      background-color: #81A5D3 !important;
+    }
+  }
+  
+  /* hover botao puxar visao */
+  .meio-circulo:hover {
+    background-color: #444b50;
+  }
+
+
+  /* header dialogo de salvar nova visao */
+  .dialog-header {
+    background-color: #4d5d68;
+    padding-top: 1px; 
+    padding-right:0px ;
+    padding-left: 2px;
+  }
+
+  /* botoes modal salvar visao  */
+  .botoes-salvar {
+    font-size: 15px;
+    font-weight: 500;
+    color: #444b50;
+  }

@@ -1,0 +1,26 @@
+<!-- filter-dialog.component.html -->
+<!-- <h1 mat-dialog-title>Filtro: {{ data.option }}</h1>
+<div mat-dialog-content>
+
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>Texto da questão</mat-label>
+    <input matInput placeholder="Digite o texto da questão:">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Aplicar</button>
+</div> -->
+
+<div>
+    <h2 mat-dialog-title>{{ data.option }}</h2>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <input matInput placeholder="Texto da questão: " [(ngModel)]="filterText" (keyup.enter)="applyFilterAndClose()" />
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="applyFilterAndClose()">Aplicar</button>
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+    </div>
+  </div>

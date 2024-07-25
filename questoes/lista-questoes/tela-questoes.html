@@ -1,0 +1,608 @@
+<!-- aba lateral editar visão -->
+<mat-sidenav-container class="visao-container">
+  
+<!-- aba visao -->
+<mat-sidenav 
+  #visaonav mode="over" position="end"  
+  class="aba-visao" 
+>
+  <!-- card da sidenav visao -->
+  <mat-card  style="height: 80.5dvh;">
+    
+    <!-- header aba visao -->
+    <mat-card-header class="aba-visao-header">
+      <h3 class="title-visao">Visões</h3> 
+      
+      <!-- botoes header aba visao -->
+      <div class="col-sm-6 m-t-4 text-right div-botoes-header-visao">
+        <!-- Botao salvar questçao -->
+        <button 
+        [routerLink]="'/apps/invoice'"
+        mat-fab
+        extended 
+        class="m-r-4 botao_add"
+        matTooltip="Criar nova visão"
+        matTooltipPosition="above"
+        (click)="openSaveViewDialog()"
+        >
+      <i-tabler name="plus" class=" icon-26 d-flex align-items-center"></i-tabler> 
+    </button>
+        <!-- botao fechar aba visao -->
+      <button 
+        mat-fab
+        extended 
+        class="m-r-4 botao_add"
+        matTooltip="Fechar aba"
+        matTooltipPosition="above"
+        (click)="closevisaonav()"
+        >
+      <i-tabler name="x" class="icon-26 d-flex align-items-center"></i-tabler> 
+      </button>
+      </div>
+        
+    </mat-card-header>
+
+    <!-- conteudo aba visao -->
+    <ng-scrollbar class="scrollbar-visao">
+      <mat-card-content class="visao-content">
+        <!-- visao padrao do exitus -->
+        <div class="container" style="padding-left: 0 !important;">
+          <div class="checkbox-col">
+            <span class="checkbox-padrao">
+              <mat-checkbox [checked]="selectedCheckbox === 'Exitus'" (change)="toggleCheckbox('Exitus')">
+                <p class="padrao"></p>
+              </mat-checkbox>
+            </span>
+          </div>
+          
+          <div class="button-col">
+            <button mat-button class="botao-view" 
+              (click)="loadExitusView()"
+              [class.active]="activeView === 'Exitus'">
+              Exibição Exitus
+            </button>
+          </div>
+          
+          <div class="delete-col">
+            <span class="col-9"></span>
+          </div>
+        </div>
+        
+        <!-- exibição das visoes favoritas  -->
+        <div *ngFor="let view of savedViews; let index = index;">
+          <div class="container" style="padding-left: 0 !important;">
+            <div class="checkbox-col">
+              <span class="checkbox-padrao">
+                <mat-checkbox 
+                class="custom-checkbox" 
+                [checked]="selectedCheckbox === view" 
+                (change)="toggleCheckbox(view)"
+                matTooltip="Definir padrão"
+                matTooltipPosition="above"
+                >
+                  <p class="padrao"></p>
+                </mat-checkbox>
+              </span>
+            </div>
+        
+            <div class="button-col">
+              <span>
+                <button mat-button class="botao-view" (click)="loadView(view)" [class.active]="activeView === view">{{ view }}</button>
+              </span>
+            </div>
+        
+            <div class="delete-col">
+              <span class="col-9 delete-sub-col ">
+                <button class="botao-delete" (click)="removeView(view)" matTooltip="Excluir visão">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+    
+    </mat-card-content>
+    
+    
+    </ng-scrollbar>
+    </mat-card>
+</mat-sidenav>
+
+<!-- Botão "visoes" em formato de meio círculo -->
+<button class="meio-circulo"
+ (click)="openvisaoNav()"
+  #meioCirculoButton
+  matTooltip="Abrir visibilidade">
+  <i-tabler name="arrow-left" class="icon-20"></i-tabler>
+</button>
+  
+<!-- barra principal tela / botoes -->
+<mat-card style="height: 10dvh;" class="cardWithShadow m-b-12 ">
+
+  <!-- conteudo da barra tela / botoes -->
+  <mat-card-content>
+    <div class="row align-items-center justify-content-between">
+      
+      <!-- barra de pesquisa -->
+      <mat-form-field class="col-lg-7" appearance="outline" >
+        <input
+          type="text"
+          matInput
+          placeholder="Ex: Categorias"
+          [matAutocomplete]="auto"
+          (keyup)="filter($any($event.target).value)"
+          [(ngModel)]="searchText"
+          #searchInput
+          name="searchText"
+        />
+        <mat-icon matSuffix>
+          <i-tabler name="search" class="text-primary icon-20"></i-tabler>
+        </mat-icon>
+
+        <!-- dropdown opçoes de filtro -->
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of filteredOptions"
+  
+            (click)="openFilterDialog(option)"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      
+      <!--  div Botoes ediçao  -->
+      <div class="col-lg-1 botoes_edicao ">
+
+        <!-- botao que abre menu colunas  -->
+        <button 
+        mat-fab
+        extended
+        class="m-r-8 botoes_tela_questao"
+        color="accent"
+        style="height: 48px;width: 48px;"
+        matTooltip="Adiconar ou remover colunas"
+        matTooltipPosition="above"
+        [matMenuTriggerFor]="menucolumns"
+      >
+      <i-tabler name="table" class="icon-questao icon-26 f-w-300 d-flex align-items-center"></i-tabler> 
+      </button>
+
+      <!-- menu colunas -->
+      <mat-menu #menucolumns="matMenu" class="menu-colunas">
+        <ng-container *ngFor="let column of allColumns" >
+          <!-- Verificação se sao as colunas que podem ser alteradas antes de exibir -->
+          <ng-container *ngIf="column !== 'Selecionadas' && column !== 'Opções' && column !== 'Status'" >
+            <mat-checkbox 
+              [checked]="displayedColumns.includes(column)" 
+              (change)="toggleColumn(column)"
+              (click)="$event.stopPropagation()"> <!-- impedir que feche o menu quando clicar nas opçoes -->
+              {{ column }}
+            </mat-checkbox>
+          </ng-container>
+        </ng-container>
+      </mat-menu>
+
+      <!-- botao exportar -->
+      <button
+      mat-fab
+      extended
+      class="m-r-8 botoes_tela_questao"
+      color="accent"
+      style="height: 48px;width: 48px;"
+      matTooltip="Exportar"
+      matTooltipPosition="above"
+      >
+        <i-tabler  name="download" class="icon-questao icon-26 d-flex align-items-center"></i-tabler> 
+      </button>
+
+      <!-- botao aba lateral -->
+      <button 
+      mat-fab
+      extended 
+      class="m-r-8 btn_aba_lateral"
+      color="accent"
+      style="height: 48px; width: 48px;"
+      matTooltip="Habilitar aba Lateral"
+      matTooltipPosition="above"
+      (click)="toggleButton()"
+      [ngClass]="{'active': isActive}" 
+      >
+        <i-tabler name="square-half" class="icon-questao icon-26 d-flex align-items-center"></i-tabler> 
+      </button>
+
+      <!-- Menu de questoes de adicionar questao -->
+      <button 
+      mat-fab 
+      extended 
+      class="btn_add_questoes" 
+      color="accent" 
+      style="height: 46px; width: 46px;" 
+      matTooltip="Adicionar questão"
+      matTooltipPosition="above"
+      [matMenuTriggerFor]="menu"
+      >
+        <i-tabler name="plus" class="icon-questao icon-28 m-t-4"></i-tabler>
+      </button>
+      <!-- menu de cadastrar nova questao -->
+      <mat-menu #menu="matMenu" class="menu-add-questoes">
+        <mat-tab-group (click)="handleLabelClick($event)">
+          <mat-tab label="Aberta" style="min-width: unset; max-width: unset;">
+            <!-- Opções para a aba Aberta -->
+            <button mat-menu-item [routerLink]="['/apps/add-aberta']" (click)="handleOptionClick('aberta', 'Alternativas Constantes')">Alternativas Constantes</button>
+            <button mat-menu-item [routerLink]="['/apps/add-aberta-associacao']">Associação</button>
+            <button mat-menu-item [routerLink]="['/apps/add-aberta-interpretacao']" >Interpretação</button>
+            <button mat-menu-item [routerLink]="['/apps/add-aberta-lacuna']" >Lacuna</button>
+            <button mat-menu-item [routerLink]="['/apps/add-aberta-ordenacao']" >Ordenação</button>
+            <button mat-menu-item [routerLink]="['/apps/add-aberta-res-unica']" >Resposta Única</button>
+
+          </mat-tab>
+          <mat-tab label="Discursiva" style="min-width: unset; max-width: unset;">
+            <!-- Opções para a aba Discursiva -->
+            <button mat-menu-item [routerLink]="['/apps/add-discursiva']" (click)="handleOptionClick('discursiva', 'Argumentativa')">Argumentativa</button>
+            <button mat-menu-item [routerLink]="['/apps/add-discursiva-descritiva']" >Descritiva</button>
+            <button mat-menu-item [routerLink]="['/apps/add-discursiva-narrativa']" >Narrativa</button>
+
+          </mat-tab>
+          <mat-tab label="Multipla escolha" style="min-width: unset; max-width: unset;">
+            <!-- Opções para a aba Multipla escolha -->
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-afirm-incompleta']" >Afirmação Incompleta</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla']" >Alternativas Constantes </button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-assercao']" >Asserção e Razão</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-associacao']" >Associação</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-foco']" >Foco negativo</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-interpretacao']" >Interpretação</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-lacuna']" >Lacuna</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-ordenacao']" >Ordenação</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-res-multipla']" >Resposta Múltipla</button>
+            <button mat-menu-item [routerLink]="['/apps/add-multipla-res-unica']" >Resposta Única</button>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-menu>
+      </div>
+
+      <div class="m-b-20" style="padding: 5px;">
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<!-- aba lateral de questoes -->
+<mat-sidenav-container class="example-container">
+    <mat-sidenav 
+      #sidenav mode="side" position="end" 
+      class="aba-lateral" >
+     
+        <!-- card da aba lateral -->
+        <mat-card class="cardWithShadow" >
+          
+          <!-- header aba lateral -->
+          <mat-card-header class="header-aba-lateral">
+            <h3 class="title-lateral">Questão: CHR- {{ codigoquestao }}</h3> 
+            
+            <!-- botoes header aba lateral -->
+            <div class="botoes-header-lateral col-sm-6 text-right">
+
+              <button 
+              mat-fab
+              extended 
+              class="m-r-8 botao_add"
+              matTooltip="Visualizar"
+              matTooltipPosition="above"
+              >
+            <i-tabler name="eye" class="text-secundary icon-26 d-flex align-items-center"></i-tabler> 
+            </button>
+            <button 
+              mat-fab
+              extended 
+              class="m-r-8 botao_add"
+
+              matTooltip="Copiar questão"
+              matTooltipPosition="above"
+              >
+            <i-tabler name="copy" class="text-secundary icon-26 d-flex align-items-center"></i-tabler> 
+            </button>
+            <button 
+              mat-fab
+              extended 
+              class="m-r-8 botao_add"
+
+              matTooltip="Fechar"
+              matTooltipPosition="above"
+              (click)="closeSidenav()"
+              >
+            <i-tabler name="x" class="text-secundary icon-26 d-flex align-items-center"></i-tabler> 
+            </button>
+            
+            </div>
+              
+          </mat-card-header>
+          
+          <!-- Pastas aba lateral  -->
+            <mat-tab-group
+            animationDuration="10ms"
+            class="custom-tab-group"
+            mat-stretch-tabs
+            >
+            <!-- pasta 1 conteudo -->
+            <mat-tab label="Conteúdo" #conteudo  [labelClass]="logEvent(conteudo.isActive)">
+              <ng-scrollbar class="aba-lateral-scrollbar"> 
+                <mat-card-content class="tab-content-lateral" > 
+                     
+                  <h3>Instrução da questão (Opcional)</h3>
+                  <p>(UNICHRISTUS - CURSO DIREITO, 2014) Leia atentamente o texto abaixo e coloque V para as alternativas VERDADEIRAS e F para as FALSAS.</p>
+                  <p>Assassino do cartunista Glauco é preso em Goiás por latrocínio.
+                    <br><br>
+                    Cadu Sundfeld Nunes é esquizofrênico. Ele matou Glauco Vilas Boas e o filho Raoni em 2010, em surto psicótico, que teria sido agravado por drogas.
+                    <br><br>
+                    A Polícia Civil de Goiás prendeu ontem Carlos Eduardo Sundfeld Nunes, de 28 anos, o “Cadu”, assassino confesso do cartunista Glauco Vilas Boas e do filho dele, Raoni Vilas Boas, em 2010. Cadu foi preso no final da manhã em Goiânia, segundo o delegado Murilo Polati Rechinelli, chefe da Divisão Estadual de Investigação de Homicídios. Ele é suspeito de ter cometido um latrocínio, roubo seguido de morte, e uma tentativa de latrocínio.
+                    <br>
+                  <h3>Texto base/Contexto</h3>
+                  <p>Assassino do cartunista Glauco é preso em Goiás por latrocínio.
+                  
+                </mat-card-content>
+              </ng-scrollbar>
+            </mat-tab>
+
+            <!-- pasta 2 clasificacao -->
+            <mat-tab label="Classificação" #classificacao [labelClass]="logEvent(classificacao.isActive)"   >
+              <ng-scrollbar style="height: 580px;">    
+                <mat-card-content class="tab-content-lateral"> 
+
+                  <h3>Categoria: {{ categoriaquestao }} </h3> 
+
+                  <h3>Curso: {{cursoquestao}}</h3>
+
+                  <h3>DIficuldade: {{dificuldadequestao}} </h3>
+
+                </mat-card-content>
+              </ng-scrollbar>
+            </mat-tab>
+
+            <!-- pasta 3 historico -->
+            <mat-tab label="Histórico" #historico [labelClass]="logEvent(historico.isActive)" >
+              <ng-scrollbar style="height: 580px;">
+                <!-- conteudo historico -->
+                <mat-card-content class="tab-content-lateral">
+                    @if ( statusquestao == 'Aprovada') {
+                      <h3>A questão encontra-se 
+                        <span style="color: #6ab860;" class="p-x-8 p-y-4 bg-light f-w-800 rounded-pill f-s-18">
+                        {{ statusquestao }}
+                      </span> 
+                    </h3>
+                      
+                    }
+    
+                    @else if (statusquestao == 'Em edição') {
+                      <h3>A questão encontra-se 
+                        <span style="color: #69ace2;" class="p-x-8 p-y-4 bg-light f-w-800 rounded-pill f-s-18">
+                          {{ statusquestao }}
+                        </span>
+                      </h3>
+                    }
+    
+                    @else if (statusquestao == 'Em moderação') {
+                      <h3>A questão encontra-se 
+                        <span style="color: #ff9100;" class="p-x-8 p-y-4 bg-light f-w-800 rounded-pill f-s-18">
+                          {{ statusquestao }}
+                        </span>
+                      </h3>
+                    }
+                </mat-card-content>
+              </ng-scrollbar>    
+            </mat-tab>
+
+            <!-- pasta 4 utilizacao -->
+            <mat-tab label="Utilização" #utilizacao [labelClass]="logEvent(utilizacao.isActive)">
+              <mat-card-content class="tab-content-lateral">
+                <h3>Essa questão foi utilizada em:</h3>
+                
+              </mat-card-content>
+            </mat-tab>
+
+          </mat-tab-group> 
+
+        </mat-card>
+      
+    
+  </mat-sidenav>
+
+<!--  Tabela ( Linhas e Colunas ) -->
+<mat-card class="cardWithShadow" style="overflow-x: hidden;">
+  <ng-scrollbar style="height: 63dvh; --scrollbar-size: 9px">
+    <div class="table-responsive">
+    <table 
+      mat-table
+      [dataSource]="invoiceList"
+      matSort
+      class="no-wrap m-t-0 v-middle w-100 text-primary"
+    >
+    <!-- Botao selecionar todas  -->
+      <ng-container matColumnDef="Selecionadas">
+        
+        <th  mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            [checked]="allComplete"
+            [indeterminate]="someComplete()"
+            (change)="setAll($event.checked)"
+            color= "light-success"
+            name="completed"
+          >
+          
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let element" class="f-s-14">
+          <mat-checkbox
+            [(ngModel)]="element.completed"
+            (ngModelChange)="updateAllComplete()"
+            color="primary"
+            name="completed"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Coluna Codigo questao -->
+      <ng-container matColumnDef="Codigo">
+        <th    
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Código
+        </th>
+        
+        <td style="color: #4d5d68;" mat-cell *matCellDef="let element" class="text-primary f-s-14">
+          CHR-{{ element.id }} 
+        </td>
+      </ng-container>
+
+      <!-- Coluna categoria -->
+      <ng-container matColumnDef="Categoria">
+        <th 
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Categoria
+        </th>
+        <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14">
+          {{ element.Categoria }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna curso -->
+      <ng-container matColumnDef="Curso">
+        <th style="color: rgb(129, 129, 129);"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Curso
+        </th>
+        <!-- Elemento -->
+        <td style="color: rgb(102, 102, 102);" mat-cell *matCellDef="let element" class="text-primary f-s-14">
+          {{ element.Curso }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna tag -->
+      <ng-container matColumnDef="Tag">
+        <th 
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Tag
+        </th>
+        <!-- Elemento -->
+        <td style="color: rgb(102, 102, 102);" mat-cell *matCellDef="let element" class="text-primary f-s-14">
+          {{ element.Tag }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna dificuldade -->
+      <ng-container matColumnDef="Dificuldade">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Dificuldade
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-primary f-s-14">  
+            {{ element.Dificuldade }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna status -->
+      <ng-container matColumnDef="Status">
+        <th 
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Status
+        </th>
+        <td style="color: rgb(102, 102, 102);" mat-cell *matCellDef="let element" class="f-s-14">
+          @if ( element.status == 'Aprovada'
+          ) {
+            <span style="color: #6ab860;" class="p-x-8 p-y-4 bg-light f-w-800 rounded-pill f-s-13">
+              {{ element.status }}
+            </span>
+          }
+
+          @else if (element.status == 'Em edição') {
+            <span style="color: #69ace2;" class="p-x-8 p-y-4 bg-light f-w-800 rounded-pill f-s-13">
+              {{ element.status }}
+            </span>
+          }
+
+          @else if (element.status == 'Em moderação') {
+            <span style="color: #ff9100;" class="p-x-8 p-y-4 bg-light f-w-800 rounded-pill f-s-13">
+              {{ element.status }}
+            </span>
+          }
+        </td>
+      </ng-container>
+
+      <!-- Coluna tipo questao -->
+      <ng-container matColumnDef="Tipo">
+        <th 
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="text-primary f-w-600 f-s-15"
+        >
+          Tipo - Subtipo
+        </th>
+        <td appear mat-cell *matCellDef="let element" class="text-primary f-s-14">
+          {{ element.Tipo }}
+        </td>
+      </ng-container>
+
+      <!-- Icones de ação -->
+      <ng-container matColumnDef="Opções">
+        <th mat-header-cell *matHeaderCellDef class="text-primary f-w-600 f-s-15">Edição</th>
+        <td mat-cell *matCellDef="let element" class="text-primary f-s-14 d-flex">
+          <button mat-icon-button class="d-flex align-items-center justify-content-center">
+            <i-tabler name="edit" class="text-primary icon-22 d-flex align-items-center"></i-tabler>
+          </button>
+        </td>
+      </ng-container>
+      
+
+      <!-- Aqui onde podemos mexer na header da tabela-->
+      <tr style="background-color: rgb(241, 241, 241);" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; let i = index; columns: displayedColumns"
+          class="clique-aba-lateral"
+          (click)="isActive ? openSidenav(element.id, element.Categoria, element.Curso, element.Dificuldade, element.status) : null"
+          (dblclick)="!isActive ? gotoquestao() : true"
+
+          [class.linha-cinza]="i % 2 === 0"  [class.linha-branca]="i % 2 !== 0">
+    </table>
+    
+    <!-- Opçoes de quantidades de questoes a serem exibidas -->
+  </div>
+  </ng-scrollbar>
+  <!-- paginator da tela  -->
+  <app-custom-paginator 
+      class="m-b-4 "
+      [length]="totalLength" 
+      [pageSize]="pageSize" 
+      [pageSizeOptions]="[10, 25, 50]"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)">
+      
+    </app-custom-paginator>
+  
+</mat-card>
+
+

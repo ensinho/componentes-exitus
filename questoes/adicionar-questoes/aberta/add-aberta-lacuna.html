@@ -1,0 +1,332 @@
+<mat-card class="cardWithShadow theme-card">
+    <!-- grupo das tabs  -->
+      <mat-tab-group
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      animationDuration="10ms"
+      class="custom-tab-group"
+        > 
+        <!-- aba conteúdo -->
+        <mat-tab label="Conteúdo" #conteudo  [labelClass]="logEvent(conteudo.isActive)" >
+          <!-- conteudo da aba -->
+          <mat-card-content class="tab-content" style="padding-bottom: 16px;">
+            <ng-scrollbar #scrollContainer style="height: 66dvh; --scrollbar-size: 9px;">
+        
+              <div class="row">
+                <div class="col-lg-9">
+  
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <mat-label class="mat-subtitle f-w-600 d-block m-b-24">Instrução da questão (Opcional)
+                        <i-tabler name="help-circle" 
+                        matTooltip="Escreva as afirmações"
+                        style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                      </mat-label>
+                      <mat-form-field appearance="outline" class="w-100" style="min-height: 150px;">
+                        <textarea matInput placeholder="Editor de texto" class="novo-input"></textarea>
+                      </mat-form-field>
+  
+                      <mat-label class="mat-subtitle f-w-600 d-block m-b-24">Texto base/Contexto (Opcional) 
+                        <i-tabler name="help-circle" 
+                        matTooltip="Escreva as afirmações"
+                        style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                      </mat-label>
+                      <mat-form-field appearance="outline" class="w-100" style="min-height: 150px;">
+                        <textarea matInput placeholder="Editor de texto" class="novo-input"></textarea>
+                      </mat-form-field>
+  
+                      <mat-label class="mat-subtitle f-w-600 d-block m-b-24">Comando ou situação problema
+                        <i-tabler name="help-circle" 
+                        matTooltip="Escreva as afirmações"
+                        style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                      </mat-label>
+                      <mat-form-field appearance="outline" class="w-100" style="min-height: 150px;">
+                        <textarea matInput placeholder="Editor de texto" class="novo-input"></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+            </ng-scrollbar>
+
+          </mat-card-content>
+        </mat-tab>
+  
+        <!-- aba resposta -->
+        <mat-tab label="Resposta e fonte" #resposta [labelClass]="logEvent(resposta.isActive)" >
+  
+          <!-- conteudo da aba -->
+          <mat-card-content class="tab-content">
+            <div class="row">
+              <div class="col-sm-6 d-flex align-items-center">
+                <mat-label class="mat-subtitle f-w-600 d-block m-b-24"
+                  >Resposta correta:
+                  <i-tabler name="help-circle" style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                </mat-label>
+              </div>
+              <div class="col-lg-12">
+                <mat-form-field appearance="outline" class="w-100" style="height: 150px;">
+                  <textarea matInput placeholder="Editor de texto"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="row m-b-12">
+                  <div class="col-sm-9">
+                    <label class="f-w-600">Referência:
+                      <i-tabler name="help-circle" 
+                      matTooltip="Conteúdo base para responder mais de uma questão. Busque uma referência já cadastrada digitando nos campos ou cadastre uma nova"
+  
+                      style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 8px" class="icon-24"></i-tabler>
+  
+                    </label>
+                <mat-radio-group [(ngModel)]="referencPosition">
+                  <mat-radio-button value="sem" color="primary"
+                    >Não há referência</mat-radio-button
+                  >
+                  <mat-radio-button value="com" color="primary"
+                    >Com referência</mat-radio-button
+                  >
+                  @if (referencPosition == 'com') {
+                    <mat-form-field appearance="outline" class="w-100" >
+                      <input matInput placeholder="Adicione a referência" />
+                    </mat-form-field>
+                  }
+                </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row m-b-12">
+                  <div class="col-sm-9">
+                    <label class="f-w-600">Fonte:
+                      <i-tabler name="help-circle" 
+                      matTooltip="Qual a fonte dessa questão?"
+                      style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 7px" class="icon-24"></i-tabler>
+                    </label>
+                <mat-radio-group [(ngModel)]="fontePosition" >
+                  <mat-radio-button value="after" color="primary" 
+                    >Autoria própria</mat-radio-button
+                  >
+                  <mat-radio-button value="before" color="primary"
+                    >É uma cópia</mat-radio-button
+                  >
+                  <mat-radio-button value="before" color="primary"
+                    >É uma cópia autenticada</mat-radio-button
+                  >
+  
+                  @if (fontePosition == 'before') {
+                    <mat-form-field appearance="outline" class="w-100" >
+                      <input matInput placeholder="De onde a questão foi tirada?" />
+                    </mat-form-field>
+                  }
+                </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row m-b-12">
+                  <div class="col-sm-9">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">  
+              </div>
+              <div class="col-lg-6">
+              </div>
+              <div class="col-lg-6">
+              </div>
+            </div>
+  
+          </mat-card-content>
+  
+        </mat-tab>
+  
+        <!-- aba classifição -->
+        <mat-tab label="Classificação" #classificacao [labelClass]="logEvent(classificacao.isActive)"   >
+  
+          <!-- conteudo da aba -->
+          <mat-card-content class="tab-content">
+  
+            <ng-scrollbar style="height: 588px; --scrollbar-size: 9px;">
+              <div class="row" >
+              <div class="col-sm-12 d-flex align-items-center" >
+                <mat-label class="mat-subtitle f-w-600 d-block m-b-24"
+                  >Palavras-chave:
+                  <i-tabler name="help-circle" 
+                  matTooltip="Termo ou conjunto de palavras que possam identificar uma questão. Máximo de 50 caracteres por tag"
+                  matTooltipPosition="below"
+                  style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                </mat-label>
+  
+                <mat-form-field appearance="outline" class="custom-outline m-l-20" style="width: 65%;">
+                  <input matInput placeholder="Ex: Guerra" />
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="row" >
+              
+              <div class="col-lg-6" >
+                <div class="row m-b-32">
+                  <div class="col-sm-9">
+                    <label class="f-w-600">Privacidade:
+                      <i-tabler name="help-circle" 
+                      matTooltip="Quem poderá acessar essa questão?"
+                      style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                    </label>
+                <mat-radio-group class="m-l-20" [(ngModel)]="labelPosition">
+                  <mat-radio-button value="after" color="primary"
+                    >Somente você</mat-radio-button
+                  >
+                  <mat-radio-button value="before" color="primary"
+                    >Todos os usuários do exitus</mat-radio-button
+                  >
+                </mat-radio-group>
+                  </div>
+                </div>
+                
+                
+  
+                <div class="row">
+                    <div class="col-sm-9">
+                    <mat-label class="mat-subtitle f-w-600 d-block m-b-12"
+                    >Categorias:
+                    <i-tabler name="help-circle" 
+                    matTooltip="A quais categorias essa questão pertence?"
+                    style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+  
+                  </mat-label>
+                    <ng-scrollbar style="height: 380px; --scrollbar-size: 8px;">
+                    <!-- categoria ciencias da natureza -->
+                    <div class="tree-view">
+                      <button class="expand-button" (click)="toggleTaskExpansion()">
+                        {{ task.expanded ? '-' : '+' }}
+                      </button>
+                      <span class="root-checkbox">
+                        <mat-checkbox [checked]="task.completed" [color]="task.color" [indeterminate]="someComplete()" (click)="$event.stopPropagation()">
+                          {{ task.name }}
+                        </mat-checkbox>
+                      </span>
+                      <span *ngIf="task.expanded">
+                        <div>
+                          <div *ngFor="let subtask of task.subtasks" class="leaf-checkbox">
+                            <mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color" (ngModelChange)="updateTaskCompletion()" (click)="$event.stopPropagation()">
+                              {{ subtask.name }}
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+  
+                    <!-- categoria ciencias humanas -->
+                    <div class="tree-view1" style="margin-top: -6px;">
+                      <button class="expand-button" (click)="toggleTask1Expansion()">
+                        {{ task1.expanded ? '-' : '+' }}
+                      </button>
+                      <span class="root-checkbox">
+                        <mat-checkbox [checked]="task1.completed" [color]="task1.color" [indeterminate]="someComplete1()" >
+                          {{ task1.name }}
+                        </mat-checkbox>
+                      </span>
+                      <span *ngIf="task1.expanded">
+                        <div>
+                          <div *ngFor="let subtask1 of task1.subtasks1" class="leaf-checkbox">
+                            <mat-checkbox [(ngModel)]="subtask1.completed" [color]="subtask1.color" (ngModelChange)="updateTaskCompletion1()" >
+                              {{ subtask1.name }}
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+  
+                    <!-- categoria linguagens e codigos -->
+                    <div class="tree-view2" style="margin-top: -6px;">
+                      <button class="expand-button" (click)="toggleTask2Expansion()">
+                        {{ task2.expanded ? '-' : '+' }}
+                      </button>
+                      <span class="root-checkbox">
+                        <mat-checkbox [checked]="task2.completed" [color]="task2.color" [indeterminate]="someComplete2()" (click)="$event.stopPropagation()">
+                          {{ task2.name }}
+                        </mat-checkbox>
+                      </span>
+                      <span *ngIf="task2.expanded">
+                        <div>
+                          <div *ngFor="let subtask2 of task2.subtasks2" class="leaf-checkbox">
+                            <mat-checkbox [(ngModel)]="subtask2.completed" [color]="subtask2.color" (ngModelChange)="updateTaskCompletion2()" (click)="$event.stopPropagation()">
+                              {{ subtask2.name }}
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+  
+                    </ng-scrollbar>
+                  </div>
+                  
+                </div>
+              </div>
+  
+              
+              <div class="col-lg-6">
+                <div class="row m-b-32" >
+                  <div class="col-sm-9">
+                    <!-- Checkbox privacidade -->
+                    <label class="f-w-600">Dificuldade:
+                      <i-tabler name="help-circle" 
+                      matTooltip="Nível de dificuldade da questão"
+                      style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                    </label>
+                    <mat-radio-group class="m-l-20" [(ngModel)]="dificuldadePosition">
+                      <mat-radio-button value="after" color="primary"
+                        >Fácil</mat-radio-button
+                      >
+                      <mat-radio-button value="before" color="primary"
+                        >Média</mat-radio-button
+                      >
+                      <mat-radio-button value="before" color="primary"
+                        >Difícil</mat-radio-button
+                      >
+                    </mat-radio-group>
+                  </div>
+                </div>
+                  
+                    <div class="col-sm-2 ">
+                      <mat-label class="mat-subtitle f-w-600 d-block m-b-24 "
+                        >Cursos:
+                        <i-tabler name="help-circle" 
+                        matTooltip="A quais cursos essa questão pertence?"
+                        style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+  
+                      </mat-label>
+                    </div>
+                    
+                    <div class="col-sm-10">
+                      <ng-scrollbar style="height: 380px; --scrollbar-size: 8px;">
+                      <div *ngFor="let Cursos of cursos.Cursos" style="margin-top: -5px;">
+                        <mat-checkbox
+                          [(ngModel)]="Cursos.completed"
+                          [color]="Cursos.color"  
+                        >
+                          {{ Cursos.name }}
+                        </mat-checkbox>
+                      </div>
+                    </ng-scrollbar>
+                    </div>
+              </div>
+            </div>
+            </ng-scrollbar>
+            
+          </mat-card-content>
+  
+        </mat-tab>
+      </mat-tab-group>
+  </mat-card>
+  
+  
+  
+  
+  
+  

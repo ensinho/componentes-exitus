@@ -1,0 +1,35 @@
+<mat-card style="margin-bottom: 0px !important; height: 45vh">
+    <mat-card-header class="dialog-header">
+        <h3 style="color: #fff;" mat-dialog-title>Editar Visões</h3>
+    </mat-card-header>
+    
+    
+
+    <mat-dialog-content >
+
+        <ng-scrollbar style="height:32vh; --scrollbar-size: 8px">
+
+        <mat-list style="height: 20vh;">
+            <mat-list-item *ngFor="let view of data.views; let i = index" style="height: 80px;">
+
+            <mat-form-field class="m-t-48" >
+                <mat-label>Nome da Visão</mat-label>
+                <input  matInput [(ngModel)]="data.views[i]" />
+            </mat-form-field>
+     
+            <button mat-icon-button (click)="removeView(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            </mat-list-item>
+        </mat-list>
+    </ng-scrollbar>
+    </mat-dialog-content>
+
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="onNoClick()">Cancelar</button>
+        <button mat-button [mat-dialog-close]="data.views">Salvar</button>
+    </mat-dialog-actions>
+
+</mat-card>

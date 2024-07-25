@@ -1,0 +1,19 @@
+
+<mat-card style="margin-bottom: 0px !important;">
+    <mat-card-header class="dialog-header">
+        <h3 style="color: #fff;" mat-dialog-title>Salvar Visão</h3>
+    </mat-card-header>
+    
+    <mat-dialog-content class="mat-typography">
+        <mat-form-field appearance="outline">
+            <mat-label>Nome da Visão</mat-label>
+            <input  matInput [(ngModel)]="data.viewName">
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button class="botoes-salvar" (click)="onNoClick()">Cancelar</button>
+        <button mat-button class="botoes-salvar" [mat-dialog-close]="data.viewName">Salvar</button>
+    </mat-dialog-actions>
+
+</mat-card>
