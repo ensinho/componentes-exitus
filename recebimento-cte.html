@@ -1,0 +1,428 @@
+<!-- barra principal tela / botoes -->
+<mat-card style="height: 8.75dvh;" class="cardWithShadow m-b-2  tab-content" appearance="outlined">
+
+    <!-- conteudo da barra tela / botoes -->
+    <mat-card-content>
+      <div class="row align-items-center justify-content-between">
+        
+        <!-- barra de pesquisa -->
+        <mat-form-field class="col-lg-10" appearance="outline" >
+          <input
+            type="text"
+            matInput
+            placeholder="Clique para selecionar o filtro e buscar as unidades que você deseja ou digite informando o campo a ser filtrado"
+            [(ngModel)]="searchText"
+            #searchInput
+            name="searchText"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="text-primary icon-20"></i-tabler>
+          </mat-icon>
+  
+        </mat-form-field>
+  
+        <!--  div Botoes ediçao  -->
+        <div class="  botoes_edicao ">
+  
+          <!-- botao que abre menu colunas  -->
+          <button 
+          mat-fab
+          extended
+          class="m-r-8 botoes_tela_questao"
+          color="accent"
+          style="height: 48px;width: 48px;"
+          matTooltip="Adiconar ou remover colunas"
+          matTooltipPosition="above"
+          [matMenuTriggerFor]="menucolumns"
+        >
+        <i-tabler name="table" class="icon-questao icon-26 f-w-300 d-flex align-items-center"></i-tabler> 
+        </button>
+  
+        <!-- menu colunas -->
+        <mat-menu #menucolumns="matMenu" class="menu-colunas">
+          <ng-container *ngFor="let column of allColumns" >
+            <!-- Verificação se sao as colunas que podem ser alteradas antes de exibir -->
+            <ng-container *ngIf="column !== 'Selecionadas' && column !== 'Opções' && column !== 'Status'" >
+              <mat-checkbox 
+                [checked]="displayedColumns.includes(column)" 
+                (change)="toggleColumn(column)"
+                (click)="$event.stopPropagation()"> 
+                {{ column }}
+              </mat-checkbox>
+            </ng-container>
+          </ng-container>
+        </mat-menu>
+  
+             <!-- botao confirmar recebimento -->
+      <button 
+      mat-fab
+      extended
+      class="m-r-8 botoes_tela_questao"
+      color="accent"
+      style="height: 48px;width: 48px;"
+      matTooltip="Confirmar Recebimento"
+      matTooltipPosition="above"
+    >
+    <i-tabler name="checks" class="icon-questao icon-26 f-w-300 d-flex align-items-center"></i-tabler> 
+    </button>
+
+        </div>
+        
+  
+      </div>
+  
+    </mat-card-content>
+  </mat-card>
+  
+  <!--  Tabela ( Linhas e Colunas ) -->
+  <mat-card class="cardWithShadow m-t-16" style="overflow-x: hidden;" appearance="outlined">
+    <!-- caso hajam poucos registros -->
+  
+      <ng-scrollbar style="height: 62.65dvh; --scrollbar-size: 9px">
+  
+        <div class="table-responsive">
+            <table 
+              mat-table
+              [dataSource]="RecebimentoList"
+              matSort
+              class="no-wrap m-t-0 v-middle w-100 text-primary"
+            >
+
+             <!-- Botao selecionar todas  -->
+             <ng-container matColumnDef="Selecionar">
+                
+              <th  mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  [checked]="allComplete"
+                  [indeterminate]="someComplete()"
+                  (change)="setAll($event.checked)"
+                  color= "light-success"
+                  name="completed"
+                >
+                
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let element" class="f-s-14 selecionar-cell">
+                <mat-checkbox
+                  [(ngModel)]="element.completed"
+                  (ngModelChange)="updateAllComplete()"
+                  color="primary"
+                  name="completed"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+        
+              <!-- Coluna Codigo questao -->
+              <ng-container matColumnDef="numero">
+                <th    
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Número
+                </th>
+                
+                <td style="color: #4d5d68;" mat-cell *matCellDef="let element" class="text-primary codigo-cell f-s-14">
+                  {{ element.numero }} 
+                </td>
+              </ng-container>
+  
+              <!-- Coluna avaliacao -->
+              <ng-container matColumnDef="avaliacao">
+                <th 
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Avaliação
+                </th>
+                <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                  {{ element.avaliacao }}
+                </td>
+              </ng-container>
+        
+              <!-- Coluna categoria -->
+              <ng-container matColumnDef="turma">
+                <th 
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Turma
+                </th>
+                <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14 turma-cell break-line">
+                  {{ element.turma }}
+                </td>
+              </ng-container>
+  
+              <!-- Coluna tipo avaliacao -->
+              <ng-container matColumnDef="tipoAvaliacao">
+                <th 
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Tipo de avaliação
+                </th>
+                <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14 break-line">
+                  {{ element.tipoAvaliacao }}
+                </td>
+              </ng-container>
+  
+               <!-- Coluna elaborador -->
+               <ng-container matColumnDef="elaborador">
+                <th 
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Elaborador
+                </th>
+                <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                  {{ element.elaborador }}
+                </td>
+              </ng-container>
+  
+               <!-- Coluna data avaliacao -->
+               <ng-container matColumnDef="dataAvaliacao">
+                <th 
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Data de avaliação
+                </th>
+                <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                  {{ element.dataAvaliacao }}
+                </td>
+              </ng-container>
+    
+               <!-- Coluna status -->
+                <ng-container matColumnDef="Status">
+                    <th 
+                    mat-header-cell
+                    *matHeaderCellDef
+                    mat-sort-header
+                    class="text-primary f-w-600 f-s-15"
+                    >
+                    Status
+                    </th>
+                    <td style="color: rgb(102, 102, 102);" mat-cell *matCellDef="let element" class="f-s-14">
+                    @if ( element.Status == 'Entregue'
+                    ) {
+                        <span style="color: #6ab860;" class=" bg-light f-w-800 rounded-pill f-s-13">
+                        {{ element.Status }}
+                        </span>
+                    }
+                    @else if (element.Status == 'Aguardando impressões') {
+                        <span style="color: #ff9801;" class=" bg-light f-w-800 rounded-pill f-s-13">
+                        {{ element.Status }}
+                        </span>
+                    }
+                    @else if (element.Status == 'Aguardando Entrega') {
+                      <span style="color: #009688;" class=" bg-light f-w-800 rounded-pill f-s-13">
+                      {{ element.Status }}
+                      </span>
+                    }
+                    @else if (element.Status == 'Em Edição') {
+                      <span style="color: #2196f3;" class=" bg-light f-w-800 rounded-pill f-s-13">
+                      {{ element.Status }}
+                      </span>
+                    }
+    
+                    </td>
+                </ng-container>
+
+              <!-- Icones de ação -->
+              <ng-container matColumnDef="Opções" >
+                <th mat-header-cell *matHeaderCellDef class="text-primary f-w-600 f-s-15">Opções</th>
+                <td mat-cell *matCellDef="let element" class="text-primary d-flex f-s-14 ">
+                  
+                  <button 
+                  mat-icon-button 
+                  class=" align-items-center justify-content-center"
+                  [routerLink]="['/apps/view-cte']"
+                  >
+                    <i-tabler name="eye" class="text-primary icon-22    align-items-center"></i-tabler>
+                  </button>
+      
+                  <button mat-icon-button class="d-flex align-items-centerjustify-content-center  "
+                  [routerLink]="['/apps/edit-layout']"
+                  >
+                    <i-tabler name="edit" class="text-primary icon-22  align-items-center"></i-tabler>
+                  </button>
+                  
+                </td>
+              </ng-container>
+  
+              <!-- Coluna Modelo -->
+              <ng-container matColumnDef="Modelo">
+                <th 
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="text-primary f-w-600 f-s-15"
+                >
+                  Modelo
+                </th>
+                <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                  {{ element.Modelo }}
+                </td>
+              </ng-container>
+  
+                  <!-- Coluna numero de copias -->
+                  <ng-container matColumnDef="Número de Copias">
+                    <th 
+                      mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header
+                      class="text-primary f-w-600 f-s-15"
+                    >
+                      N° de copias
+                    </th>
+                    <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                      {{ element.Copias }}
+                    </td>
+                  </ng-container>
+  
+                    <!-- Coluna data de criação -->
+                    <ng-container matColumnDef="Data de criação">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                        Data de criação
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.DataCriacao }}
+                      </td>
+                    </ng-container>
+  
+                    <!-- Coluna envio p secretaria -->
+                    <ng-container matColumnDef="Data de envio para Secretaria">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                        Data de envio para secretaria
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.DataEnvio }}
+                      </td>
+                    </ng-container>
+  
+                    <!-- Coluna data de recebimento -->
+                    <ng-container matColumnDef="Data de recebimento">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                        Data de recebimento
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.DataRecebimento }}
+                      </td>
+                    </ng-container>
+  
+                     <!-- Coluna cor impressao -->
+                     <ng-container matColumnDef="Cor da impressão">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                      Cor da impressão
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.Cor }}
+                      </td>
+                    </ng-container>
+  
+                    <!-- Coluna tipo impressao -->
+                    <ng-container matColumnDef="Tipo da impressão">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                      Tipo da impressão
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.TipoImpressao }}
+                      </td>
+                    </ng-container>
+  
+                     <!-- Coluna grafica -->
+                     <ng-container matColumnDef="Gráfica">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                      Gráfica
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.Grafica }}
+                      </td>
+                    </ng-container>
+  
+                    <!-- Coluna Secretaria -->
+                    <ng-container matColumnDef="Secretaria">
+                      <th 
+                        mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-primary f-w-600 f-s-15"
+                      >
+                      Secretaria
+                      </th>
+                      <td style="color: #4d5d68 ;" mat-cell *matCellDef="let element" class="text-primary f-s-14  break-line">
+                        {{ element.Secretaria }}
+                      </td>
+                    </ng-container>
+        
+        
+      
+        
+              <!-- Aqui onde podemos mexer na header da tabela-->
+              <tr style="background-color: rgb(241, 241, 241);" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; let i = index; columns: displayedColumns"
+                  class="clique-aba-lateral"
+                  
+                  [class.linha-cinza]="i % 2 === 0"  [class.linha-branca]="i % 2 !== 0">
+            </table>
+            
+            <!-- Opçoes de quantidades de questoes a serem exibidas -->
+          </div>
+      </ng-scrollbar>
+  
+        <!-- paginator da tela  -->
+        <app-custom-paginator 
+        class="m-b-4 "
+        [length]="totalLength" 
+        [pageSize]="pageSize" 
+        [pageSizeOptions]="[10, 25, 50]"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+  
+        </app-custom-paginator>
+  
+    
+  </mat-card>
+  
