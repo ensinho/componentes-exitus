@@ -1,0 +1,25 @@
+<ng-template #breadcrumbbuttons>
+    <!-- Botao voltar -->
+    <button (click)="goBack()"  mat-fab extended class="m-r-8 botao_add" color="accent"
+    style="height: 46px;width: 46px;" matTooltip="Voltar" matTooltipPosition="above">
+    <i-tabler name="arrow-back-up" class="btn-breadcrumb icon-26 d-flex align-items-center"></i-tabler>
+  </button>
+  
+  <!-- Botao salvar curso -->
+  <button routerLink="'/apps/material-aprendizagem'" mat-fab extended class="m-r-8 botao_add" color="accent"
+    style="height: 46px;width: 46px;" matTooltip="Salvar Material" matTooltipPosition="above">
+    <i-tabler name="device-floppy" class="btn-breadcrumb icon-26 d-flex align-items-center"></i-tabler>
+  </button>
+  </ng-template>
+
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-content class="tab-content">
+        <div class="col-12">
+          <div class="row">
+              <div class="col-12">
+                <exitus-editor [editable]="true" content="Conteúdo do material selecionado !"></exitus-editor>
+              </div>    
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,76 @@
+<!-- Barra de pesquisa e filtros -->
+<mat-card class="course-app cardWithShadow m-b-16 m-t-16">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-8">
+        <mat-form-field appearance="outline" class="w-100 hide-hint tab-content">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar materiais de aprendizagem" />
+          <i-tabler name="search" class="icon-18 m-r-8" matSuffix></i-tabler>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3">
+       <!-- Paginador -->
+        <mat-paginator
+        [length]="listaMaterial.length"
+        [pageSize]="itensPorPagina"
+        (page)="mudarPagina($event)">
+        </mat-paginator>        
+      </div>
+
+      <button
+          mat-fab
+          extended
+          class="m-r-8 btn_add_questoes"
+          color="accent"
+          style="height: 42px; width: 42px"
+          matTooltip="Adicionar Material"
+          matTooltipPosition="above"
+          [routerLink]="['/apps/add-material-aprendizagem']"
+        >
+          <i-tabler
+            name="plus"
+            class="icon-questao icon-26 d-flex align-items-center"
+          ></i-tabler>
+        </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+<div class="container">
+  <div class="row">
+    <!-- Itera sobre a lista filtrada da página atual -->
+    <ng-container *ngFor="let material of materiaisPagina">
+      <div class="col-lg-3">
+        <mat-card class="cardWithShadow overflow-hidden">
+          <mat-card-header class="course-header bg-{{ material.tipoMaterial }} d-flex justify-content-between" >
+            <mat-card-title class="f-s-16">{{ material.nomeMaterial }}</mat-card-title>
+            <mat-card-subtitle style="color: #fff">{{ material.tipoMaterial }}</mat-card-subtitle>
+            <!-- Botões de ação -->
+            <div class="justify-content-end">
+              <button mat-mini-fab style="background-color: transparent;">
+                <i-tabler name="eye" class="icon-28"></i-tabler>
+              </button>
+              <button mat-mini-fab style="background-color: transparent;"
+              routerLink='/apps/edit-material-aprendizagem'
+              >
+                <i-tabler name="edit" class="icon-28"></i-tabler>
+              </button>
+            </div>
+          </mat-card-header>
+          <!-- Imagem -->
+          <mat-card-content *ngIf="material.imagem !== ''" class="text-center p-y-20">
+            <div class="image-container">
+              <img [src]="material.imagem">
+            </div>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+        </mat-card>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+
+

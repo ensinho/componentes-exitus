@@ -1,0 +1,140 @@
+<ng-template #breadcrumbbuttons>
+  <!-- Botao voltar -->
+  <button (click)="goBack()"  mat-fab extended class="m-r-8 botao_add" color="accent"
+  style="height: 46px;width: 46px;" matTooltip="Voltar" matTooltipPosition="above">
+  <i-tabler name="arrow-back-up" class="btn-breadcrumb icon-26 d-flex align-items-center"></i-tabler>
+</button>
+
+<!-- Botao salvar curso -->
+<button routerLink="'/apps/material-aprendizagem'" mat-fab extended class="m-r-8 botao_add" color="accent"
+  style="height: 46px;width: 46px;" matTooltip="Salvar Material" matTooltipPosition="above">
+  <i-tabler name="device-floppy" class="btn-breadcrumb icon-26 d-flex align-items-center"></i-tabler>
+</button>
+</ng-template>
+
+<mat-card class="cardWithShadow theme-card">
+    <!-- grupo das tabs  -->
+      <mat-tab-group
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      animationDuration="10ms"
+      class="custom-tab-group"
+        >
+        <!-- aba conteúdo -->
+         <mat-tab label="Conteúdo" #conteudo [labelClass]="conteudo.isActive ? 'tab_ativa' : ' tab_inativa'">
+          <mat-card-content class="tab-content">
+            <div class="col-12">
+              <div class="row">
+                  <div class="col-12">
+                    <mat-label class="mat-subtitle f-w-600 d-block m-b-12">Conteúdo:
+                      <i-tabler name="help-circle" matTooltip="O que irá conter dentro do Material"
+                        style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px"
+                        class="icon-24"></i-tabler>
+        
+                    </mat-label>
+                    <exitus-editor [editable]="true" [initialHeight]="570"></exitus-editor>
+                  </div>
+        
+                </div>
+          </div>
+          </mat-card-content>
+        </mat-tab>        
+        <!-- aba classifição -->
+        <mat-tab label="Classificação" #classificacao [labelClass]="classificacao.isActive ? 'tab_ativa' : ' tab_inativa'">            
+            <mat-card-content class="tab-content">
+                <!-- campo nome material -->
+                  <div class="row m-b-24">
+                    <div class="col-12  align-items-center">
+                      <mat-label class="mat-subtitle f-w-600 d-block m-b-16">Nome do Material:
+                        <i-tabler name="help-circle"
+                          matTooltip="Nome para identificação do Material de Aprendizagem"
+                          matTooltipPosition="below"
+                          style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px"
+                          class="icon-24"></i-tabler>
+                      </mat-label>
+                      <!-- input nome -->
+                      <mat-form-field appearance="outline" class="custom-outline  w-90">
+                        <input matInput placeholder="Nome do Material" />
+                      </mat-form-field>
+                    </div>
+                  </div>           
+                                    
+                  <!-- row campos -->
+                  <div class="container-layout">
+                    <!-- Card de Categorias à esquerda -->
+                    <div class="card-categorias">
+                      <mat-card class="cardWithShadow theme-card" appearance="outlined">
+                        <mat-card-header class="mat-card-header-custom">
+                          <mat-label class="f-w-600">Categorias:</mat-label>
+                        </mat-card-header>
+                        <mat-card-content class="b-t-1" style="height: 150px;">
+                          <!-- Conteúdo do card -->
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                  
+                    <!-- Campos à direita -->
+                    <div class="form-fields">
+                      <div class="grid-fields">
+                        <!-- Campo da Tag -->
+                        <div>
+                          <mat-label class="mat-subtitle f-w-600 d-block m-b-16">Tag:
+                            <i-tabler name="help-circle" matTooltip="Nome para identificação do Material de Aprendizagem"
+                              matTooltipPosition="below" style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px"
+                              class="icon-24"></i-tabler>
+                          </mat-label>
+                          <mat-form-field appearance="outline" class="w-100">
+                            <input matInput placeholder="Ex: Guerra" />
+                          </mat-form-field>
+                        </div>
+                  
+                        <!-- Campo Privacidade -->
+                        <div>
+                          <mat-label class="f-w-600 d-block m-b-16">Privacidade:
+                            <i-tabler name="help-circle" matTooltip="Quem poderá acessar esse Material?" style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                          </mat-label>
+                          <mat-radio-group>
+                            <mat-radio-button [value]="1" color="primary">Somente você</mat-radio-button>
+                            <mat-radio-button [value]="2" color="primary">Todos os usuários do exitus</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                  
+                        <!-- Campo Curso -->
+                        <div>
+                          <mat-label class="f-w-600 d-block m-b-16">Curso:
+                            <i-tabler name="help-circle" matTooltip="Curso para qual o material é disponibilizado" style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                          </mat-label>
+                          @if (cursos$ | async; as cursos) {
+                            <mat-form-field appearance="outline" class="w-100">
+                              <mat-select>
+                                <mat-option *ngFor="let curso of cursos" [value]="curso">
+                                  {{ curso.nome }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          }
+                        </div>
+                  
+                        <!-- Campo Tipo de Material -->
+                        <div>
+                          <mat-label class="f-w-600 d-block m-b-16">Tipo do Material:
+                            <i-tabler name="help-circle" matTooltip="Qual o tipo do Material?" style="color: #fff; margin-left: 8px; fill: #7696BC; position: relative; top: 5px" class="icon-24"></i-tabler>
+                          </mat-label>
+                          <mat-radio-group>
+                            <mat-radio-button value="A" color="primary">Anexo</mat-radio-button>
+                            <mat-radio-button value="T" color="primary">Texto</mat-radio-button>
+                            <mat-radio-button value="L" color="primary">Lição</mat-radio-button>
+                            <mat-radio-button value="P" color="primary">Apostila</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                                                              
+              </mat-card-content>                
+        </mat-tab>
+        
+      </mat-tab-group>
+  </mat-card>
+  
